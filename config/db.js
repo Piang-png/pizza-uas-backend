@@ -10,6 +10,12 @@ const connection = await mysql.createConnection({
     database: process.env.DB_NAME
 });
 
-console.log("Database Connected");
+try {
+    await connection.query("SELECT 1");
+    console.log("Database Connected");
+} catch (error) {
+    console.log("Database Failed");
+    console.log(error);
+}
 
 export default connection;
