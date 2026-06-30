@@ -1,4 +1,6 @@
 import express from "express";
+import authMiddleware from "../middleware/authMiddleware.js";
+import roleMiddleware from "../middleware/roleMiddleware.js";
 
 import {
     getAllCustomers,
@@ -10,14 +12,44 @@ import {
 
 const router = express.Router();
 
-router.get("/", getAllCustomers);
+// Hanya Admin
+router.get(
+    "/",
+    authMiddleware,
+    roleMiddleware("admin"),
+    getAllCustomers
+);
 
-router.get("/:id", getCustomerById);
+// Hanya Admin
+router.get(
+    "/:id",
+    authMiddleware,
+    roleMiddleware("admin"),
+    getCustomerById
+);
 
-router.post("/", createCustomer);
+// Hanya Admin
+router.post(
+    "/",
+    authMiddleware,
+    roleMiddleware("admin"),
+    createCustomer
+);
 
-router.put("/:id", updateCustomer);
+// Hanya Admin
+router.put(
+    "/:id",
+    authMiddleware,
+    roleMiddleware("admin"),
+    updateCustomer
+);
 
-router.delete("/:id", deleteCustomer);
+// Hanya Admin
+router.delete(
+    "/:id",
+    authMiddleware,
+    roleMiddleware("admin"),
+    deleteCustomer
+);
 
 export default router;

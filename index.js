@@ -6,6 +6,9 @@ import connection from "./config/db.js";
 import productRoutes from "./routes/productRoutes.js";
 import customerRoutes from "./routes/customerRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
+import authMiddleware from "./middleware/authMiddleware.js";
+import roleMiddleware from "./middleware/roleMiddleware.js";
 
 dotenv.config();
 
@@ -25,6 +28,14 @@ app.get("/", (req, res) => {
 app.use("/products", productRoutes);
 app.use("/customers", customerRoutes);
 app.use("/orders", orderRoutes);
+app.use("/auth", authRoutes);
+
+app.get("/profile", authMiddleware, (req, res) => {
+    res.json({
+        success: true,
+        user: req.user
+    });
+});
 
 
 // START SERVER

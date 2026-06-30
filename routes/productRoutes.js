@@ -8,21 +8,38 @@ import {
     deleteProduct
 } from "../controllers/productController.js";
 
+import authMiddleware from "../middleware/authMiddleware.js";
+import roleMiddleware from "../middleware/roleMiddleware.js";
+
+
 const router = express.Router();
 
-// GET semua produk
 router.get("/", getAllProducts);
 
-// GET produk berdasarkan ID
 router.get("/:id", getProductById);
 
-// POST produk
-router.post("/", createProduct);
+// Hanya admin
+router.post(
+    "/",
+    authMiddleware,
+    roleMiddleware("admin"),
+    createProduct
+);
 
-// PUT produk
-router.put("/:id", updateProduct);
+// Hanya admin
+router.put(
+    "/:id",
+    authMiddleware,
+    roleMiddleware("admin"),
+    updateProduct
+);
 
-// DELETE produk
-router.delete("/:id", deleteProduct);
+// Hanya admin
+router.delete(
+    "/:id",
+    authMiddleware,
+    roleMiddleware("admin"),
+    deleteProduct
+);
 
 export default router;
