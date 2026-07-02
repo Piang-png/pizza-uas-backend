@@ -1,4 +1,6 @@
 import express from "express";
+import authMiddleware from "../middleware/authMiddleware.js";
+import roleMiddleware from "../middleware/roleMiddleware.js";
 
 import {
     getAllOrders,
@@ -7,8 +9,20 @@ import {
 
 const router = express.Router();
 
-router.get("/", getAllOrders);
+// Hanya admin yang bisa lihat semua order
+router.get(
+    "/",
+    authMiddleware,
+    roleMiddleware("admin"),
+    getAllOrders
+);
 
-router.post("/", createOrder);
+// User dan admin yang sudah login bisa membuat order
+router.post(
+    "/",
+    authMiddleware,
+    roleMiddleware("admin", "user"),
+    createOrder
+);
 
 export default router;
