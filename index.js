@@ -20,7 +20,7 @@ app.use(express.json());
 
 // HOME
 app.get("/", (req, res) => {
-  res.send("API Pizza jalan");
+  res.send("API jalan");
 });
 
 
