@@ -20,15 +20,15 @@ class Customer extends BaseModel {
     }
 
     async create(data) {
+    const { name, phone } = data;
 
-        const { name, phone } = data;
+    const [result] = await this.connection.execute(
+        "INSERT INTO customers(name, phone) VALUES(?, ?)",
+        [name, phone]
+    );
 
-        await this.connection.execute(
-            "INSERT INTO customers(name, phone) VALUES(?, ?)",
-            [name, phone]
-        );
-
-    }
+    return result.insertId;
+}
 
     async update(id, data) {
 

@@ -58,35 +58,35 @@ export const getCustomerById = async (req, res) => {
 
 // POST
 export const createCustomer = async (req, res) => {
+  try {
+    const { name, phone } = req.body;
 
-    try {
-
-        const { name, phone } = req.body;
-
-        if (!name || !phone) {
-
-            return res.status(400).json({
-                success: false,
-                message: "Data tidak lengkap"
-            });
-
-        }
-
-        await customerModel.create(req.body);
-
-        res.status(201).json({
-            success: true,
-            message: "Customer berhasil ditambahkan"
-        });
-
-    } catch (error) {
-
-        res.status(500).json({
-            success: false
-        });
-
+    if (!name || !phone) {
+      return res.status(400).json({
+        success: false,
+        message: "Nama dan phone wajib diisi"
+      });
     }
 
+    const customerId = await customerModel.create({ name, phone });
+
+    res.status(201).json({
+      success: true,
+      message: "Customer berhasil dibuat",
+      data: {
+        id: customerId,
+        name,
+        phone
+      }
+    });
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
 };
 
 // PUT

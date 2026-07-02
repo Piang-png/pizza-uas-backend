@@ -4,12 +4,21 @@ import roleMiddleware from "../middleware/roleMiddleware.js";
 
 import {
     getAllOrders,
+    getMyOrders,
     createOrder
 } from "../controllers/orderController.js";
 
 const router = express.Router();
 
-// Hanya admin yang bisa lihat semua order
+// USER: lihat order miliknya sendiri
+router.get(
+    "/my-orders",
+    authMiddleware,
+    roleMiddleware("user"),
+    getMyOrders
+);
+
+// ADMIN: lihat semua order
 router.get(
     "/",
     authMiddleware,
@@ -17,7 +26,7 @@ router.get(
     getAllOrders
 );
 
-// User dan admin yang sudah login bisa membuat order
+// USER dan ADMIN: buat order
 router.post(
     "/",
     authMiddleware,
